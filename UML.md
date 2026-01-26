@@ -10,7 +10,7 @@ flowchart LR
     UC3[Atualizar Funcionário]
     UC4[Deletar Funcionário]
     UC5[Consultar Auditoria]
-    UC6[Consultar Média Salarial por Cargo]
+    UC6[Ver Média Salarial por Cargo]
     UC7[Reajustar Salário por Cargo]
 
     RH --> UC1

@@ -39,7 +39,7 @@ flowchart TD
 ```mermaid
 %%{init: {"theme":"neutral"}}%%
 flowchart TD
-    A[Usuário envia ID e novos dados]
+    A[Usuário envia ID e os dados]
     B[API recebe requisição]
     C[Atualiza funcionário no banco]
     D{Funcionário existe?}
@@ -100,7 +100,7 @@ flowchart TD
 ```mermaid
 %%{init: {"theme":"neutral"}}%%
 flowchart TD
-    A[Usuário informa cargo e percentual]
+    A[Usuário informa cargo e %]
     B[API valida dados]
     C{Dados válidos?}
     D[Retorna erro 400]
