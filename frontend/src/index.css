@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0f172a;
+  --bg-card: #111827;
+  --bg-hover: #1f2937;
+
+  --border: #1f2937;
+
+  --text: #f9fafb;
+  --text-muted: #9ca3af;
+
+  --primary: #1e293b;
+  --primary-hover: #334155;
+
+  --cancel: #ff2929;
+  --cancel-hover: #ef3e3e;
+
+  --save: #1a9c00;
+  --save-hover: #1fb601;
+
+  --font-title: 2.5rem;
+  --font-subtitle: 1.5rem;
+  --font-base: 0.95rem;
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+
+  --transition: 0.2s ease-in-out;
+}
+
+
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, sans-serif;
+}
+
+h1 {
+  font-size: var(--font-title);
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: var(--space-lg);
+  margin-top: 50px;
+}
+
+.btn {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-base);
+  font-weight: 500;
+  transition: var(--transition);
+  cursor: pointer;
+  border: none;
+}
+
+/* Primário */
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+/* Perigo */
+.btn-cancel {
+  background: var(--cancel);
+  color: white;
+}
+
+.btn-cancel:hover {
+  background: var(--cancel-hover);
+}
+
+.btn-save {
+  background: var(--save);
+  color: white;
+}
+
+.btn-save:hover {
+  background: var(--save-hover);
+}
+
+.input {
+  width: 100%;
+  padding: var(--space-sm);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: var(--font-base);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+.input:focus {
+  border-color: var(--primary-hover);
+  box-shadow: 0 0 0 1px var(--primary-hover);
+}
+
+.table-wrapper {
+  background: var(--bg);
+  color: var(--text);
+  border: 3px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-base);
+}
+
+.table th {
+  padding: var(--space-sm);
+  text-align: left;
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.table td {
+  padding: var(--space-sm);
+  border-top: 1px solid var(--border);
+}
+
+.table tr:hover {
+  background: var(--bg-hover);
+}
+
+.table-aud {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-base);
+}
+
+.table-aud th {
+  padding: var(--space-sm);
+  text-align: left;
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.table-aud td {
+  padding: var(--space-sm);
+  border-top: 1px solid var(--border);
+}
+
+/* grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 */
+.card-container{
+  background: var(--bg);
+  color: var(--text);
+  border-radius: var(--radius-md);
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-top: 20px;
+}
+
+.card {
+  border-radius: 0.5rem;
+  background-color: var(--bg);
+  border: 3px solid var(--border);
+  padding: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+}
+
+.card h3 {
+  color: var(--text);
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.card p {
+  font-weight: bold;
+  font-size: 16px;
+  color: #68d391;
+}
