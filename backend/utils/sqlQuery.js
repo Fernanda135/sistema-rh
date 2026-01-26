@@ -11,7 +11,7 @@ export const criarTabelaFuncionariosQuery = `
 `;
 
 // Selecionar todos os funcionários
-export const todosFuncionariosQuery = `SELECT * FROM funcionarios;`;
+export const todosFuncionariosQuery = `SELECT * FROM funcionarios ORDER BY id;`;
 
 // Inserir um novo funcionário
 export const criarFuncionarioQuery = `
