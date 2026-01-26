@@ -68,16 +68,14 @@ const TabelaFuncionarios = ({ data }) => {
                                 <td>R$ {item.salario}</td>
                                 <td>
                                     <div className="flex items-center gap-3">
+
                                         <InputFuncionario data={item} type='edit'>
                                             <button className="text-blue-400 hover:text-blue-500 transition cursor-pointer">
                                                 <Pencil size={15} />
                                             </button>
                                         </InputFuncionario>
 
-                                        <button
-                                            className="text-red-400 hover:text-red-500 transition cursor-pointer"
-                                            onClick={() => mutation.mutate(item.id)}
-                                        >
+                                        <button className="text-red-400 hover:text-red-500 transition cursor-pointer" onClick={() => mutation.mutate(item.id)} >
                                             <Trash2 size={15} />
                                         </button>
                                     </div>

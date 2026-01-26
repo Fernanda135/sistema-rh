@@ -58,9 +58,9 @@ h1 {
   transition: var(--transition);
   cursor: pointer;
   border: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
-/* Primário */
 .btn-primary {
   background: var(--primary);
   color: white;
@@ -70,7 +70,6 @@ h1 {
   background: var(--primary-hover);
 }
 
-/* Perigo */
 .btn-cancel {
   background: var(--cancel);
   color: white;
@@ -114,6 +113,7 @@ h1 {
   border: 3px solid var(--border);
   border-radius: var(--radius-md);
   overflow-x: auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .table {
@@ -139,6 +139,7 @@ h1 {
 }
 
 .table-aud {
+  background: var(--bg-card);
   width: 100%;
   border-collapse: collapse;
   font-size: var(--font-base);
@@ -156,7 +157,6 @@ h1 {
   border-top: 1px solid var(--border);
 }
 
-/* grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 */
 .card-container{
   background: var(--bg);
   color: var(--text);
@@ -164,8 +164,9 @@ h1 {
   display: grid;
   width: 100%;
   grid-template-columns: repeat(5, 1fr);
-  gap: 1rem;
+  gap: 1.5rem;
   margin-top: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .card {
@@ -175,6 +176,11 @@ h1 {
   padding: 1rem;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   color: #ffffff;
+  transition: var(--transition);
+}
+
+.card:hover {
+  scale: 1.1;
 }
 
 .card h3 {

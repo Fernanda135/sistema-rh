@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Variáveis de ambiente obrigatórias
 const variaveisObrigatorias = [
     "PG_USER",
     "PG_HOST",
@@ -19,7 +18,7 @@ variaveisObrigatorias.forEach((nomeVar) => {
     }
 });
 
-// Criar pool de conexões
+// criar conexões
 const db = new pg.Pool({
     user: process.env.PG_USER,
     host: process.env.PG_HOST,
@@ -28,12 +27,13 @@ const db = new pg.Pool({
     port: Number(process.env.PG_PORT),
 });
 
-// Eventos da pool
+// conectar com o postgres
+// sucesso
 db.on("connect", () => console.log("Conectado ao PostgreSQL"));
+// erro
 db.on("error", (erro) => {
     console.error("Erro no banco de dados:", erro);
     process.exit(1);
 });
 
-// Exportar função de query
 export const query = (texto, parametros) => db.query(texto, parametros);

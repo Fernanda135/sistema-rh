@@ -16,11 +16,7 @@ const SelectCargo = ({ value, onChange }) => {
                 Cargo<span className="text-red-500 ml-0.5">*</span>
             </label>
 
-            <select
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                className="w-full px-3 py-2 bg-gray-900 border border-gray-600 text-white rounded"
-            >
+            <select value={value} className="input" onChange={(e) => onChange(e.target.value)} >
                 {cargos.map((c) => (
                     <option key={c.value} value={c.value}>
                         {c.label}

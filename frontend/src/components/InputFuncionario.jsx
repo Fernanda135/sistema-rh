@@ -91,16 +91,15 @@ const InputFuncionario = ({ children, type = "add", data }) => {
 
             {open && (
                 <div className="fixed inset-0 grid place-items-center bg-black/60 backdrop-blur-sm">
+                    
                     <div className="relative m-4 w-2/5 min-w-[40%] max-w-[40%] rounded-lg bg-gray-900 border-gray-800 border-2 p-4 shadow-sm animate-slide-in-bottom">
 
-                        {/* Cabeçalho com título */}
                         <div className="flex items-center justify-between mb-8">
                             <h2 className="text-2xl font-semibold text-white">
                                 {type === "add" ? "Adicionar Funcionário" : "Atualizar Funcionário"}
                             </h2>
                         </div>
 
-                        {/* Campos de entrada */}
                         <div className="flex flex-col gap-4">
                             <Field label="Nome" required>
                                 <input
@@ -139,27 +138,15 @@ const InputFuncionario = ({ children, type = "add", data }) => {
                                     onChange={handleChange}
                                 />
                             </Field>
-                            <SelectCargo
-                                value={info.cargo}
-                                onChange={(cargo) =>
-                                    setInfo((prev) => ({ ...prev, cargo }))
-                                }
-                            />
+                            <SelectCargo value={info.cargo} onChange={(cargo) => setInfo((prev) =>  ({ ...prev, cargo })) } />
 
                         </div>
 
-                        {/* Botões */}
                         <div className="flex justify-end gap-3 mt-10">
-                            <button
-                                onClick={() => setOpen(false)}
-                                className="btn btn-cancel"
-                            >
+                            <button className="btn btn-cancel" onClick={() => setOpen(false)} >
                                 Cancelar
                             </button>
-                            <button
-                                onClick={handleSubmit}
-                                className="btn btn-save"
-                            >
+                            <button onClick={handleSubmit} className="btn btn-save" >
                                 {type === "add" ? "Adicionar" : "Atualizar"}
                             </button>
                         </div>

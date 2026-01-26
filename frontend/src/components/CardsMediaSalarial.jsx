@@ -27,20 +27,16 @@ const CardsMediaSalarial = () => {
 
     return (
         <div className="card-container">
-            {data.map((item) => (
-                <div
-                    key={item.cargo}
-                    className="card"
-                >
-                    <h3>
-                        {item.cargo}
-                    </h3>
 
-                    <p>
-                        R$ {item.media ? Number(item.media).toFixed(2) : "0.00"}
-                    </p>
+            {data.map((item) => (
+                <div key={item.cargo} className="card" >
+
+                    <h3>{item.cargo}</h3>
+                    <p>R$ {item.media ? Number(item.media).toFixed(2) : "0.00"}</p>
+
                 </div>
             ))}
+
         </div>
     );
 };

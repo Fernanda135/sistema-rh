@@ -17,12 +17,12 @@ export const todosFuncionariosQuery = `SELECT * FROM funcionarios;`;
 export const criarFuncionarioQuery = `
     INSERT INTO funcionarios (nome, email, idade, cargo, salario)
     VALUES ($1, $2, $3, $4, $5)
-    RETURNING *
+    RETURNING *;
 `;
 
 // Selecionar um funcionário pelo ID
 export const pegarFuncionarioQuery = `
-    SELECT * FROM funcionarios WHERE id = $1
+    SELECT * FROM funcionarios WHERE id = $1;
 `;
 
 // Deletar um funcionário pelo ID
@@ -124,7 +124,7 @@ export const auditoriaFuncionariosQuery = `
 //     INTO media
 //     FROM funcionarios
 //     WHERE cargo = p_cargo;
-//
+
 //     RETURN media;
 // END;
 // $$ LANGUAGE plpgsql;

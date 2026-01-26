@@ -35,18 +35,20 @@ const App = () => {
     <>
 
       <div className="min-h-screen flex flex-col items-center justify-start">
+
         <div className="w-full max-w-5xl">
-          <h1 className="title">
-            Gerenciamento de RH
-          </h1>
+
+          <h1 className="title">Gerenciamento de RH</h1>
+
           <InputFuncionario>
             <button className="btn btn-primary">
                 Adicionar Funcionário
             </button>
           </InputFuncionario>
+          
           <Auditoria>
             <button className="btn btn-primary ml-4">
-                Ver Auditoria
+                Auditoria
             </button>
           </Auditoria>
 
@@ -56,11 +58,12 @@ const App = () => {
               </button>
           </ReajusteSalarial>
 
+          <TabelaFuncionarios data={data} />
+
           <h2 className="text-2xl font-bold mt-4">Média salarial por cargo</h2>
 
           <CardsMediaSalarial />
 
-          <TabelaFuncionarios data={data} />
         </div>
       </div>
     </>

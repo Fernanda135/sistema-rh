@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { BotaoFechar } from "./BotaoFechar";
 
 export function Dialogo({ aberto, aoFechar, children }) {
-  // Bloqueia o scroll do body enquanto o diálogo estiver aberto
+
   useEffect(() => {
     document.body.style.overflow = aberto ? "hidden" : "auto";
   }, [aberto]);

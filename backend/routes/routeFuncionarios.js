@@ -12,28 +12,28 @@ import {
 
 const rotas = express.Router();
 
-// Listar a tabela auditoria
+// trigger - listar a tabela auditoria
 rotas.get("/auditoria", listarAuditoria)
 
-// function
+// function - media salarial por cargo
 rotas.get("/media/:cargo", mediaSalarialPorCargo);
 
-// procedure
+// procedure - reajusta o salário por cargo
 rotas.post("/reajuste", reajustarSalarioPorCargo);
 
-// Obter todos os funcionários
+// obter todos os funcionários
 rotas.get("/", listarFuncionarios);
 
-// Criar um novo funcionário
+// criar um novo funcionário
 rotas.post("/", criarFuncionario);
 
-// Obter um funcionário pelo ID
+// obter um funcionário pelo id
 rotas.get("/:id", pegarFuncionario);
 
-// Deletar um funcionário pelo ID
+// deletar um funcionário pelo id
 rotas.delete("/:id", deletarFuncionario);
 
-// Atualizar um funcionário pelo ID
+// atualizar um funcionário pelo id
 rotas.put("/:id", atualizarFuncionario);
 
 export default rotas;
