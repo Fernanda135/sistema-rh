@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import rotas from "./routes/routeFuncionarios.js";
+import rotas from "./routes/rotas.js";
 
 dotenv.config();
 

@@ -1,17 +1,23 @@
--- criação do banco de dados
+-- Banco de Dados: sistema_rh
 -- CREATE DATABASE sistema_rh;
 
--- tabela de funcionários
-CREATE TABLE funcionarios(
+-- Tabela: Departamentos
+CREATE TABLE departamentos (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL UNIQUE
+);
+
+-- Tabela: Funcionários
+CREATE TABLE funcionarios (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL,
     idade SMALLINT NOT NULL,
-    cargo VARCHAR(50) NOT NULL,
-    salario DECIMAL(8,2) NOT NULL
+    salario DECIMAL(8,2) NOT NULL,
+    departamento_id INT NOT NULL REFERENCES departamentos(id)
 );
 
--- tabela de auditoria para registrar operações realizadas na tabela funcionarios
+-- Tabela: Auditoria de Funcionários
 CREATE TABLE auditoria_funcionarios (
     id SERIAL PRIMARY KEY,
     funcionario_id INT,
@@ -21,7 +27,7 @@ CREATE TABLE auditoria_funcionarios (
     data_operacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- função responsável por registrar as operações na auditoria
+-- Função: Auditoria de Funcionários
 CREATE OR REPLACE FUNCTION fn_auditoria_funcionarios()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -69,16 +75,16 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- trigger que chama a função de auditoria na tabela funcionarios
+-- Trigger que chama a função de auditoria na tabela funcionarios
 CREATE TRIGGER trg_auditoria_funcionarios
 AFTER INSERT OR UPDATE OR DELETE
 ON funcionarios
 FOR EACH ROW
 EXECUTE FUNCTION fn_auditoria_funcionarios();
 
--- função que retorna a média salarial de um cargo específico
-CREATE OR REPLACE FUNCTION media_salarial_por_cargo(
-    p_cargo VARCHAR
+-- Função: Média Salarial por Departamento
+CREATE OR REPLACE FUNCTION media_salarial_dpt(
+    p_departamento_id INT
 )
 RETURNS NUMERIC(10,2) AS $$
 DECLARE
@@ -87,15 +93,15 @@ BEGIN
     SELECT AVG(salario)
     INTO media
     FROM funcionarios
-    WHERE cargo = p_cargo;
+    WHERE departamento_id = p_departamento_id;
 
     RETURN media;
 END;
 $$ LANGUAGE plpgsql;
 
--- procedure responsável por aplicar reajuste salarial por cargo
-CREATE OR REPLACE PROCEDURE reajustar_salario_por_cargo(
-    p_cargo VARCHAR,
+-- Procedure: Reajuste Salarial por Departamento
+CREATE OR REPLACE PROCEDURE reajustar_salario_dpt(
+    p_departamento_id INT,
     p_percentual NUMERIC
 )
 LANGUAGE plpgsql
@@ -103,6 +109,10 @@ AS $$
 BEGIN
     UPDATE funcionarios
     SET salario = salario + (salario * p_percentual / 100)
-    WHERE cargo = p_cargo;
+    WHERE departamento_id = p_departamento_id;
 END;
 $$;
+
+DELETE FROM funcionarios
+WHERE id = 1;
+

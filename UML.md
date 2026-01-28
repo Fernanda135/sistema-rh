@@ -3,7 +3,7 @@
 ```mermaid
 %%{init: {"theme":"neutral"}}%%
 flowchart LR
-    RH[Administrador / RH]
+    ADM[Administrador]
 
     UC1[Listar Funcionários]
     UC2[Criar Funcionário]
@@ -13,10 +13,11 @@ flowchart LR
     UC6[Ver Média Salarial por Cargo]
     UC7[Reajustar Salário por Cargo]
 
-    RH --> UC1
-    RH --> UC2
-    RH --> UC3
-    RH --> UC4
-    RH --> UC5
-    RH --> UC6
-    RH --> UC7
+    ADM --> UC1
+    ADM --> UC2
+    ADM --> UC3
+    ADM --> UC4
+    ADM --> UC5
+    ADM --> UC6
+    ADM --> UC7
+```

@@ -1,3 +1,34 @@
+// Departamentos
+
+// Criar tabela de departamentos
+export const criarTabelaDepartamentosQuery = `
+    CREATE TABLE departamentos (
+        id SERIAL PRIMARY KEY,
+        nome VARCHAR(50) NOT NULL UNIQUE
+    );
+`;
+
+// Inserir um novo departamento
+export const criarDepartamentoQuery = `
+    INSERT INTO departamentos (nome)
+    VALUES ($1)
+    RETURNING *;
+`;
+
+// Selecionar todos os departamentos
+export const todosDepartamentosQuery = `
+    SELECT * FROM departamentos ORDER BY id;
+`;
+
+// Deletar um departamento pelo ID
+export const deletarDepartamentoQuery = `
+    DELETE FROM departamentos WHERE id = $1
+    RETURNING *;
+`;
+
+
+// Funcionários
+
 // Criar tabela de funcionários
 export const criarTabelaFuncionariosQuery = `
     CREATE TABLE funcionarios(
@@ -5,17 +36,33 @@ export const criarTabelaFuncionariosQuery = `
         nome VARCHAR(50) NOT NULL,
         email VARCHAR(50) NOT NULL,
         idade SMALLINT NOT NULL,
-        cargo VARCHAR(50) NOT NULL DEFAULT 'Intern',
-        salario DECIMAL(8,2) NOT NULL
+        salario DECIMAL(8,2) NOT NULL,
+        departamento_id INT NOT NULL REFERENCES departamentos(id)
     );
 `;
 
 // Selecionar todos os funcionários
-export const todosFuncionariosQuery = `SELECT * FROM funcionarios ORDER BY id;`;
+export const todosFuncionariosQuery = `
+    SELECT * FROM funcionarios ORDER BY id;
+`;
+
+// Selecionar todos os funcionários com nome do departamento
+export const todosFuncionariosComDepartamentoQuery = `
+    SELECT 
+        f.id,
+        f.nome,
+        f.email,
+        f.idade,
+        f.salario,
+        f.departamento_id,
+        d.nome AS departamento_nome
+    FROM funcionarios f
+    LEFT JOIN departamentos d ON f.departamento_id = d.id;
+`;
 
 // Inserir um novo funcionário
 export const criarFuncionarioQuery = `
-    INSERT INTO funcionarios (nome, email, idade, cargo, salario)
+    INSERT INTO funcionarios (nome, email, idade, salario, departamento_id)
     VALUES ($1, $2, $3, $4, $5)
     RETURNING *;
 `;
@@ -25,11 +72,6 @@ export const pegarFuncionarioQuery = `
     SELECT * FROM funcionarios WHERE id = $1;
 `;
 
-// Deletar um funcionário pelo ID
-export const deletarFuncionarioQuery = `
-    DELETE FROM funcionarios WHERE id = $1
-`;
-
 // Atualizar informações de um funcionário
 export const atualizarFuncionarioQuery = `
     UPDATE funcionarios
@@ -37,118 +79,102 @@ export const atualizarFuncionarioQuery = `
         nome = $1,
         email = $2,
         idade = $3,
-        cargo = $4,
-        salario = $5
+        salario = $4,
+        departamento_id = $5
     WHERE id = $6
-    RETURNING *
+    RETURNING *;
+`;
+
+// Deletar um funcionário pelo ID
+export const deletarFuncionarioQuery = `
+    DELETE FROM funcionarios WHERE id = $1;
 `;
 
 
-// CREATE TABLE auditoria_funcionarios (
-//     id SERIAL PRIMARY KEY,
-//     funcionario_id INT,
-//     operacao VARCHAR(10),
-//     dados_antes JSONB,
-//     dados_depois JSONB,
-//     data_operacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-// );
+// Auditoria
 
+// Criar tabela de auditoria de funcionários
+export const criarTabelaAuditoriaQuery = `
+    CREATE TABLE auditoria_funcionarios (
+        id SERIAL PRIMARY KEY,
+        funcionario_id INT,
+        operacao VARCHAR(10),
+        dados_antes JSONB,
+        dados_depois JSONB,
+        data_operacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+`;
 
+// Criar trigger de auditoria para a tabela de funcionários
+export const criarTriggerAuditQuery = `
+    CREATE OR REPLACE FUNCTION fn_auditoria_funcionarios()
+    RETURNS TRIGGER AS $$
+    BEGIN
+        IF TG_OP = 'INSERT' THEN
+            INSERT INTO auditoria_funcionarios (
+                funcionario_id,
+                operacao,
+                dados_depois
+            )
+            VALUES (
+                NEW.id,
+                'INSERT',
+                row_to_json(NEW)
+            );
+            RETURN NEW;
 
-// CREATE OR REPLACE FUNCTION fn_auditoria_funcionarios()
-// RETURNS TRIGGER AS $$
-// BEGIN
-//     IF TG_OP = 'INSERT' THEN
-//         INSERT INTO auditoria_funcionarios (
-//             funcionario_id,
-//             operacao,
-//             dados_depois
-//         )
-//         VALUES (
-//             NEW.id,
-//             'INSERT',
-//             row_to_json(NEW)
-//         );
-//         RETURN NEW;
+        ELSIF TG_OP = 'UPDATE' THEN
+            INSERT INTO auditoria_funcionarios (
+                funcionario_id,
+                operacao,
+                dados_antes,
+                dados_depois
+            )
+            VALUES (
+                NEW.id,
+                'UPDATE',
+                row_to_json(OLD),
+                row_to_json(NEW)
+            );
+            RETURN NEW;
 
-//     ELSIF TG_OP = 'UPDATE' THEN
-//         INSERT INTO auditoria_funcionarios (
-//             funcionario_id,
-//             operacao,
-//             dados_antes,
-//             dados_depois
-//         )
-//         VALUES (
-//             NEW.id,
-//             'UPDATE',
-//             row_to_json(OLD),
-//             row_to_json(NEW)
-//         );
-//         RETURN NEW;
+        ELSIF TG_OP = 'DELETE' THEN
+            INSERT INTO auditoria_funcionarios (
+                funcionario_id,
+                operacao,
+                dados_antes
+            )
+            VALUES (
+                OLD.id,
+                'DELETE',
+                row_to_json(OLD)
+            );
+            RETURN OLD;
+        END IF;
+    END;
+    $$ LANGUAGE plpgsql;
 
-//     ELSIF TG_OP = 'DELETE' THEN
-//         INSERT INTO auditoria_funcionarios (
-//             funcionario_id,
-//             operacao,
-//             dados_antes
-//         )
-//         VALUES (
-//             OLD.id,
-//             'DELETE',
-//             row_to_json(OLD)
-//         );
-//         RETURN OLD;
-//     END IF;
-// END;
-// $$ LANGUAGE plpgsql;
+    CREATE TRIGGER trg_auditoria_funcionarios
+    AFTER INSERT OR UPDATE OR DELETE
+    ON funcionarios
+    FOR EACH ROW
+    EXECUTE FUNCTION fn_auditoria_funcionarios();
+`;
 
-// CREATE TRIGGER trg_auditoria_funcionarios
-// AFTER INSERT OR UPDATE OR DELETE
-// ON funcionarios
-// FOR EACH ROW
-// EXECUTE FUNCTION fn_auditoria_funcionarios();
-
+// Selecionar registros de auditoria
 export const auditoriaFuncionariosQuery = `
-    SELECT * FROM auditoria_funcionarios
+    SELECT * FROM auditoria_funcionarios;
 `;
 
 
-// CREATE OR REPLACE FUNCTION media_salarial_por_cargo(
-//     p_cargo VARCHAR
-// )
-// RETURNS NUMERIC(10,2) AS $$
-// DECLARE
-//     media NUMERIC(10,2);
-// BEGIN
-//     SELECT AVG(salario)
-//     INTO media
-//     FROM funcionarios
-//     WHERE cargo = p_cargo;
+// Function e Procedure
 
-//     RETURN media;
-// END;
-// $$ LANGUAGE plpgsql;
-
-export const mediaSalarialPorCargoQuery = `
-    SELECT media_salarial_por_cargo($1) AS media
+// Média salarial por departamento
+export const mediaSalarialPorDepartamentoQuery = `
+    SELECT media_salarial_dpt($1) AS media;
 `;
 
-
-
-// CREATE OR REPLACE PROCEDURE reajustar_salario_por_cargo(
-//     p_cargo VARCHAR,
-//     p_percentual NUMERIC
-// )
-// LANGUAGE plpgsql
-// AS $$
-// BEGIN
-//     UPDATE funcionarios
-//     SET salario = salario + (salario * p_percentual / 100)
-//     WHERE cargo = p_cargo;
-// END;
-// $$;
-
-
-export const reajustarSalarioPorCargoQuery = `
-    CALL reajuste_salarial_por_cargo($1, $2)
+// Reajustar salários por departamento
+export const reajustarSalarioPorDepartamentoQuery = `
+    CALL reajustar_salario_dpt($1, $2);
 `;

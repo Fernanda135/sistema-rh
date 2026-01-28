@@ -1,72 +1,80 @@
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
+
 import TabelaFuncionarios from "./components/TabelaFuncionarios.jsx";
 import InputFuncionario from "./components/InputFuncionario.jsx";
 import Auditoria from "./components/Auditoria.jsx";
 import ReajusteSalarial from "./components/ReajusteSalarial.jsx";
-import CardsMediaSalarial from "./components/CardsMediaSalarial.jsx";
-import { useQuery } from "@tanstack/react-query";
+import CardsDepartamentos from "./components/CardsDepartamentos.jsx";
+import InputDepartamento from "./components/InputDepartamento.jsx";
+
 import { baseUrl } from "../constants/global-variable.js";
 
-
 const App = () => {
-
-  async function buscarFuncionarios(params) {
+  // Função para buscar funcionários
+  async function buscarFuncionarios() {
     const res = await fetch(baseUrl);
     const data = await res.json();
-    if(!res.ok){
-      throw new Error(data.error);
-    }
+    if (!res.ok) throw new Error(data.error || "Erro ao buscar funcionários");
     return data;
   }
 
-  const {isPending, isError, data, error} = useQuery({
+  // Query para carregar funcionários
+  const { isPending, isError, data, error } = useQuery({
     queryKey: ["funcionarios"],
-    queryFn: buscarFuncionarios
-  })
+    queryFn: buscarFuncionarios,
+  });
 
-  if(isPending) return "Carregando...";
+  if (isPending) return "Carregando...";
+  if (isError) return error.message;
 
-  if(isError) return error.message;
-
-  console.log("dados do postgre db: ", data);
-  
+  console.log("Dados do PostgreSQL:", data);
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col items-center justify-start">
+      <div className="w-full max-w-5xl">
 
-      <div className="min-h-screen flex flex-col items-center justify-start">
+        {/* Título */}
+        <h1 className="title">Gerenciamento de RH</h1>
 
-        <div className="w-full max-w-5xl">
+        {/* Seção Departamentos */}
+        <div className="container-dpt">
+          <h2 className="subtitle">Departamentos</h2>
 
-          <h1 className="title">Gerenciamento de RH</h1>
+          {/* Modal adicionar departamento */}
+          <InputDepartamento>
+            <button className="btn btn-primary">Adicionar Departamento</button>
+          </InputDepartamento>
 
+          <h3 className="mt-4">Média Salarial</h3>
+          <CardsDepartamentos />
+        </div>
+
+        {/* Seção Funcionários */}
+        <div className="container-func">
+          <h2 className="subtitle">Funcionários</h2>
+
+          {/* Modal adicionar funcionário */}
           <InputFuncionario>
-            <button className="btn btn-primary">
-                Adicionar Funcionário
-            </button>
+            <button className="btn btn-primary">Adicionar Funcionário</button>
           </InputFuncionario>
-          
+
+          {/* Botão auditoria */}
           <Auditoria>
-            <button className="btn btn-primary ml-4">
-                Auditoria
-            </button>
+            <button className="btn btn-primary ml-4">Auditoria</button>
           </Auditoria>
 
+          {/* Botão reajuste salarial */}
           <ReajusteSalarial>
-              <button className="btn btn-primary ml-4">
-                  Reajustar Salários
-              </button>
+            <button className="btn btn-primary ml-4">Reajustar Salários</button>
           </ReajusteSalarial>
 
+          {/* Tabela de funcionários */}
           <TabelaFuncionarios data={data} />
-
-          <h2 className="text-2xl font-bold mt-4">Média salarial por cargo</h2>
-
-          <CardsMediaSalarial />
-
         </div>
+
       </div>
-    </>
+    </div>
   );
 };
 
