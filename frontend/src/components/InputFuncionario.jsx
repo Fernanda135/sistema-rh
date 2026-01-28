@@ -17,7 +17,7 @@ const InputFuncionario = ({ children, type = "add", data }) => {
         : data
     );
 
-    // Preenche formulário ao editar
+    // formulário ao editar
     useEffect(() => {
         if (type === "edit" && data) {
         setInfo(data);
@@ -34,7 +34,7 @@ const InputFuncionario = ({ children, type = "add", data }) => {
         React.cloneElement(child, { onClick: () => setOpen(true) })
     );
 
-    // Mutation para adicionar funcionário
+    // adicionar funcionário
     const addMutation = useMutation({
         mutationFn: async (novoFuncionario) => {
         const response = await fetch(baseUrl, {
@@ -54,7 +54,7 @@ const InputFuncionario = ({ children, type = "add", data }) => {
         },
     });
 
-    // Mutation para atualizar funcionário
+    // atualizar funcionário
     const updateMutation = useMutation({
         mutationFn: async (info) => {
         const response = await fetch(`${baseUrl}/${info.id}`, {
@@ -95,7 +95,6 @@ const InputFuncionario = ({ children, type = "add", data }) => {
             <div className="fixed inset-0 grid place-items-center bg-black/60 backdrop-blur-sm">
             <div className="relative m-4 w-2/5 min-w-[40%] max-w-[40%] rounded-lg bg-gray-900 border-gray-800 border-2 p-4 shadow-sm animate-slide-in-bottom">
 
-                {/* Cabeçalho */}
                 <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl font-semibold text-white">
                     {type === "add" ? "Adicionar Funcionário" : "Atualizar Funcionário"}
@@ -151,7 +150,6 @@ const InputFuncionario = ({ children, type = "add", data }) => {
                 />
                 </div>
 
-                {/* Ações */}
                 <div className="flex justify-end gap-3 mt-10">
                 <button className="btn btn-cancel" onClick={() => setOpen(false)}>
                     Cancelar

@@ -11,7 +11,7 @@ import InputDepartamento from "./components/InputDepartamento.jsx";
 import { baseUrl } from "../constants/global-variable.js";
 
 const App = () => {
-  // Função para buscar funcionários
+  // buscar funcionários
   async function buscarFuncionarios() {
     const res = await fetch(baseUrl);
     const data = await res.json();
@@ -19,7 +19,7 @@ const App = () => {
     return data;
   }
 
-  // Query para carregar funcionários
+  // carregar funcionários
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["funcionarios"],
     queryFn: buscarFuncionarios,
@@ -41,7 +41,6 @@ const App = () => {
         <div className="container-dpt">
           <h2 className="subtitle">Departamentos</h2>
 
-          {/* Modal adicionar departamento */}
           <InputDepartamento>
             <button className="btn btn-primary">Adicionar Departamento</button>
           </InputDepartamento>
@@ -54,7 +53,6 @@ const App = () => {
         <div className="container-func">
           <h2 className="subtitle">Funcionários</h2>
 
-          {/* Modal adicionar funcionário */}
           <InputFuncionario>
             <button className="btn btn-primary">Adicionar Funcionário</button>
           </InputFuncionario>

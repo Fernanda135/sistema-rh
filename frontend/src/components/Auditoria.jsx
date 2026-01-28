@@ -35,7 +35,6 @@ const Auditoria = ({ children }) => {
             <div className="fixed inset-0 z-50 grid place-items-center bg-black/60 backdrop-blur-sm">
             <div className="relative w-4/5 max-w-6xl rounded-lg bg-gray-900 border border-gray-800 p-6 shadow-lg">
                 
-                {/* Cabeçalho */}
                 <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-semibold text-white">
                     Auditoria de Funcionários
@@ -48,7 +47,6 @@ const Auditoria = ({ children }) => {
                 </button>
                 </div>
 
-                {/* Estados da query */}
                 {isLoading && <p className="text-gray-300">Carregando auditoria...</p>}
                 {isError && <p className="text-red-500">{error.message}</p>}
                 {data && data.length === 0 && (
@@ -75,7 +73,6 @@ const Auditoria = ({ children }) => {
                             <td>{item.id}</td>
                             <td>{item.funcionario_id}</td>
 
-                            {/* Operação com cores */}
                             <td>
                             <span
                                 className={`px-2 py-1 rounded text-xs font-semibold
@@ -88,7 +85,6 @@ const Auditoria = ({ children }) => {
                             </span>
                             </td>
 
-                            {/* Dados antes */}
                             <td>
                             {item.dados_antes ? (
                                 <div>
@@ -104,7 +100,6 @@ const Auditoria = ({ children }) => {
                             )}
                             </td>
 
-                            {/* Dados depois */}
                             <td>
                             {item.dados_depois ? (
                                 <div>
@@ -120,7 +115,6 @@ const Auditoria = ({ children }) => {
                             )}
                             </td>
 
-                            {/* Data */}
                             <td className="text-gray-400 text-sm">
                             {new Date(item.data_operacao).toLocaleString()}
                             </td>

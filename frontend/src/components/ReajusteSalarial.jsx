@@ -11,7 +11,7 @@ const ReajusteSalarial = ({ children }) => {
     const [departamentoId, setDepartamentoId] = useState("");
     const [percentual, setPercentual] = useState("");
 
-    // Mutation para aplicar reajuste
+    // aplicar reajuste
     const mutation = useMutation({
         mutationFn: async () => {
         const response = await fetch(`${baseUrl}/reajuste`, {
@@ -51,10 +51,8 @@ const ReajusteSalarial = ({ children }) => {
             <div className="fixed inset-0 z-50 grid place-items-center bg-black/60 backdrop-blur-sm">
             <div className="w-full max-w-md rounded-lg bg-gray-900 border border-gray-800 p-6">
 
-                {/* Cabeçalho */}
                 <h2 className="text-xl font-semibold text-white mb-4">Reajuste Salarial</h2>
 
-                {/* Formulário */}
                 <div className="space-y-4">
                 <SelectDepartamento 
                     value={departamentoId} 
@@ -69,7 +67,6 @@ const ReajusteSalarial = ({ children }) => {
                 />
                 </div>
 
-                {/* Ações */}
                 <div className="flex justify-end gap-3 mt-6">
                 <button onClick={() => setOpen(false)} className="btn btn-cancel">
                     Cancelar

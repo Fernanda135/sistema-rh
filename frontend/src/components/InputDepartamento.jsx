@@ -15,7 +15,7 @@ const InputDepartamento = ({ children }) => {
         React.cloneElement(child, { onClick: () => setOpen(true) })
     );
 
-    // Mutation para adicionar departamento
+    // adicionar departamento
     const addMutation = useMutation({
         mutationFn: async (novoDepartamento) => {
         const res = await fetch(`${baseUrl}/departamentos`, {

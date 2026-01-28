@@ -18,12 +18,12 @@ const TabelaFuncionarios = () => {
         }
     });
 
-    // Estados de carregamento e erro
+    // carregamento e erro
     if (isLoading) return <p>Carregando funcionários...</p>;
     if (isError) return <p className='text-red-500'>Erro: {error.message}</p>;
     if (!data || data.length === 0) return <p className='text-gray-400'>Nenhum funcionário encontrado.</p>;
 
-    // Mutation para deletar funcionário
+    // deletar funcionário
     const deleteMutation = useMutation({
         mutationFn: async (id) => {
         const res = await fetch(`${baseUrl}/funcionarios/${id}`, {
@@ -66,20 +66,18 @@ const TabelaFuncionarios = () => {
                     <td>{func.nome}</td>
                     <td>{func.email}</td>
                     <td>{func.idade}</td>
-                    <td>{func.departamento_nome || "—"}</td> {/* Nome do departamento */}
+                    <td>{func.departamento_nome || "—"}</td>
                     <td>R$ {Number(func.salario).toFixed(2)}</td>
 
                     <td>
                     <div className="flex items-center gap-3">
 
-                        {/* Botão editar */}
                         <InputFuncionario data={func} type="edit">
                         <button className="text-blue-400 hover:text-blue-500 transition cursor-pointer">
                             <Pencil size={15} />
                         </button>
                         </InputFuncionario>
 
-                        {/* Botão deletar */}
                         <button
                         className="text-red-400 hover:text-red-500 transition cursor-pointer"
                         onClick={() => {
