@@ -48,7 +48,7 @@ const InputFuncionario = ({ children, type = "add", data }) => {
         onSuccess: () => {
         toast.success("Funcionário adicionado com sucesso!");
         queryClient.invalidateQueries({ queryKey: ["funcionarios"] });
-        queryClient.invalidateQueries({ queryKey: ["media-salarial"] });
+        queryClient.invalidateQueries({ queryKey: ["media-salarial-departamentos"] });
         setOpen(false);
         setInfo({ nome: "", email: "", idade: "", salario: "", departamento_id: "" });
         },
@@ -60,15 +60,15 @@ const InputFuncionario = ({ children, type = "add", data }) => {
         const response = await fetch(`${baseUrl}/${info.id}`, {
             method: "PUT",
             body: JSON.stringify(info),
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" }
         });
         if (!response.ok) throw new Error("Falha ao atualizar funcionário");
         return response.json();
         },
         onSuccess: () => {
         toast.success("Funcionário atualizado com sucesso!");
-        queryClient.invalidateQueries({ queryKey: ["funcionarios"] });
-        queryClient.invalidateQueries({ queryKey: ["media-salarial"] });
+        queryClient.invalidateQueries({ queryKey: ["funcionarios"]});
+        queryClient.invalidateQueries({ queryKey: ["media-salarial-departamentos"] });
         setOpen(false);
         },
     });

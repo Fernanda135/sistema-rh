@@ -30,7 +30,7 @@ const ReajusteSalarial = ({ children }) => {
         onSuccess: () => {
         toast.success("Salários reajustados com sucesso!");
         queryClient.invalidateQueries({ queryKey: ["funcionarios"] });
-        queryClient.invalidateQueries({ queryKey: ["media-salarial"] });
+        queryClient.invalidateQueries({ queryKey: ["media-salarial-departamentos"] });
         setOpen(false);
         setDepartamentoId("");
         setPercentual("");

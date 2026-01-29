@@ -3,21 +3,38 @@
 ```mermaid
 %%{init: {"theme":"neutral"}}%%
 flowchart LR
-    ADM[Administrador]
+    %% Atores
+    Admin["Administrador"]
+    Gestor["Gestor de Departamento"]
+    Sistema["Sistema"]
 
-    UC1[Listar Funcionários]
-    UC2[Criar Funcionário]
-    UC3[Atualizar Funcionário]
-    UC4[Deletar Funcionário]
-    UC5[Consultar Auditoria]
-    UC6[Ver Média Salarial por Cargo]
-    UC7[Reajustar Salário por Cargo]
+    %% Casos de Uso
+    CadastrarDepto(["Cadastrar Departamento"])
+    CadastrarFunc(["Cadastrar Funcionário"])
+    AtualizarFunc(["Atualizar Funcionário"])
+    ExcluirFunc(["Excluir Funcionário"])
+    ConsultarFunc(["Consultar Funcionários"])
+    MediaSalarial(["Calcular Média Salarial"])
+    ReajusteSalarial(["Reajustar Salário por Departamento"])
+    Auditoria(["Registrar Auditoria"])
 
-    ADM --> UC1
-    ADM --> UC2
-    ADM --> UC3
-    ADM --> UC4
-    ADM --> UC5
-    ADM --> UC6
-    ADM --> UC7
+    %% Relações
+    Admin --> CadastrarDepto
+    Admin --> CadastrarFunc
+    Admin --> AtualizarFunc
+    Admin --> ExcluirFunc
+    Admin --> ConsultarFunc
+
+    Gestor --> ConsultarFunc
+    Gestor --> MediaSalarial
+    Gestor --> ReajusteSalarial
+
+    Sistema --> Auditoria
+
+    %% Includes
+    CadastrarFunc -.->|<<include>>| Auditoria
+    AtualizarFunc -.->|<<include>>| Auditoria
+    ExcluirFunc -.->|<<include>>| Auditoria
+
+
 ```

@@ -8,15 +8,18 @@ import { queryClient } from "../../utils/queryClient.js";
 import InputFuncionario from './InputFuncionario.jsx';
 
 const TabelaFuncionarios = () => {
+    
     // Buscar funcionários com departamento
-    const { data, isLoading, isError, error } = useQuery({
+    const { data = [], isLoading, isError, error } = useQuery({
         queryKey: ["funcionarios"],
         queryFn: async () => {
-        const res = await fetch(`${baseUrl}/com-departamento`);
-        if (!res.ok) throw new Error("Erro ao buscar funcionários");
-        return res.json();
+            const res = await fetch(`${baseUrl}/com-departamento`);
+            if (!res.ok) throw new Error("Erro ao buscar funcionários");
+            return res.json();
         }
     });
+
+
 
     // carregamento e erro
     if (isLoading) return <p>Carregando funcionários...</p>;
@@ -26,22 +29,24 @@ const TabelaFuncionarios = () => {
     // deletar funcionário
     const deleteMutation = useMutation({
         mutationFn: async (id) => {
-        const res = await fetch(`${baseUrl}/funcionarios/${id}`, {
+            const res = await fetch(`${baseUrl}/${id}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
-        });
-        if (!res.ok) {
+            });
+
+            if (!res.ok) {
             const err = await res.json();
             throw new Error(err.erro || "Erro ao deletar funcionário");
-        }
-        return res.json();
+            }
+
+            return res.json();
         },
         onSuccess: () => {
-        toast.success("Funcionário deletado com sucesso!");
-        queryClient.invalidateQueries({ queryKey: ["funcionarios-com-departamento"] });
+            toast.success("Funcionário deletado com sucesso!");
+            queryClient.invalidateQueries({ queryKey: ["funcionarios"] });
         },
-        onError: (err) => toast.error(err.message),
-    });
+        });
+
 
     return (
         <div className="pt-5">
@@ -66,7 +71,7 @@ const TabelaFuncionarios = () => {
                     <td>{func.nome}</td>
                     <td>{func.email}</td>
                     <td>{func.idade}</td>
-                    <td>{func.departamento_nome || "—"}</td>
+                    <td>{func.departamento_nome ?? "—"}</td>
                     <td>R$ {Number(func.salario).toFixed(2)}</td>
 
                     <td>
@@ -80,10 +85,7 @@ const TabelaFuncionarios = () => {
 
                         <button
                         className="text-red-400 hover:text-red-500 transition cursor-pointer"
-                        onClick={() => {
-                            if (window.confirm(`Deseja realmente deletar "${func.nome}"?`)) {
-                            deleteMutation.mutate(func.id);
-                            }
+                        onClick={() => {deleteMutation.mutate(func.id);
                         }}
                         >
                         <Trash2 size={15} />

@@ -57,7 +57,8 @@ export const todosFuncionariosComDepartamentoQuery = `
         f.departamento_id,
         d.nome AS departamento_nome
     FROM funcionarios f
-    LEFT JOIN departamentos d ON f.departamento_id = d.id;
+    LEFT JOIN departamentos d ON f.departamento_id = d.id
+    ORDER BY f.id;
 `;
 
 // Inserir um novo funcionário
