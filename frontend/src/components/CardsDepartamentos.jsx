@@ -36,19 +36,26 @@ const CardsDepartamentos = () => {
 
     // Deleta departamento
     const deleteMutation = useMutation({
-        mutationFn: async (id) => {
+      mutationFn: async (id) => {
         const res = await fetch(`${baseUrl}/departamentos/${id}`, {
-            method: "DELETE",
+          method: "DELETE",
         });
-        if (!res.ok) throw new Error("Erro ao deletar departamento");
-        return res.json();
-        },
-        onSuccess: () => {
+        const data = await res.json();
+        if (!res.ok)
+          throw new Error(data.erro || "Erro ao deletar departamento");
+        return data;
+      },
+      onSuccess: () => {
         toast.success("Departamento deletado com sucesso!");
         queryClient.invalidateQueries({ queryKey: ["departamentos"] });
-        queryClient.invalidateQueries({ queryKey: ["media-salarial-departamentos"] });
-        },
-        onError: (err) => toast.error(err.message),
+        queryClient.invalidateQueries({
+          queryKey: ["media-salarial-departamentos"],
+        });
+      },
+      onError: (err) => {
+        console.error("Erro ao deletar:", err.message);
+        toast.error(err.message);
+      },
     });
 
     if (isLoading) return <p className="text-gray-400">Carregando departamentos...</p>;

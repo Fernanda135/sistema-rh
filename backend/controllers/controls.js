@@ -1,21 +1,22 @@
 import { query } from "../utils/connectDB.js";
 import {
-    criarTabelaDepartamentosQuery,
-    todosDepartamentosQuery,
-    criarDepartamentoQuery,
-    deletarDepartamentoQuery,
-    criarTabelaFuncionariosQuery,
-    todosFuncionariosQuery,
-    criarFuncionarioQuery,
-    pegarFuncionarioQuery,
-    deletarFuncionarioQuery,
-    atualizarFuncionarioQuery,
-    todosFuncionariosComDepartamentoQuery,
-    criarTabelaAuditoriaQuery,
-    criarTriggerAuditQuery,
-    auditoriaFuncionariosQuery,
-    mediaSalarialPorDepartamentoQuery,
-    reajustarSalarioPorDepartamentoQuery
+  criarTabelaDepartamentosQuery,
+  todosDepartamentosQuery,
+  criarDepartamentoQuery,
+  deletarDepartamentoQuery,
+  contarFuncionariosPorDepartamentoQuery,
+  criarTabelaFuncionariosQuery,
+  todosFuncionariosQuery,
+  criarFuncionarioQuery,
+  pegarFuncionarioQuery,
+  deletarFuncionarioQuery,
+  atualizarFuncionarioQuery,
+  todosFuncionariosComDepartamentoQuery,
+  criarTabelaAuditoriaQuery,
+  criarTriggerAuditQuery,
+  auditoriaFuncionariosQuery,
+  mediaSalarialPorDepartamentoQuery,
+  reajustarSalarioPorDepartamentoQuery,
 } from "../utils/sqlQuery.js";
 import { createError } from "../utils/error.js";
 
@@ -63,11 +64,27 @@ export async function criarDepartamento(req, res, next) {
 // Deletar departamento
 export async function deletarDepartamento(req, res, next) {
     try {
-        const { id } = req.params;
-        const result = await query(deletarDepartamentoQuery, [id]);
-        if (result.rowCount === 0) return next(createError(404, "Departamento não encontrado"));
+      const { id } = req.params;
 
-        res.status(200).json({ message: "Departamento deletado com sucesso" });
+      // Verificar se há funcionários no departamento
+      const countResult = await query(contarFuncionariosPorDepartamentoQuery, [
+        id,
+      ]);
+      const employeeCount = parseInt(countResult.rows[0].count);
+      if (employeeCount > 0) {
+        return next(
+          createError(
+            400,
+            "Não é possível deletar um departamento que possui funcionários",
+          ),
+        );
+      }
+
+      const result = await query(deletarDepartamentoQuery, [id]);
+      if (result.rowCount === 0)
+        return next(createError(404, "Departamento não encontrado"));
+
+      res.status(200).json({ message: "Departamento deletado com sucesso" });
     } catch (error) {
         next(createError(400, error.message));
     }

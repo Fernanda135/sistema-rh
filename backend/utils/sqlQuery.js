@@ -26,6 +26,11 @@ export const deletarDepartamentoQuery = `
     RETURNING *;
 `;
 
+// Contar funcionários por departamento
+export const contarFuncionariosPorDepartamentoQuery = `
+    SELECT COUNT(*) AS count FROM funcionarios WHERE departamento_id = $1;
+`;
+
 
 // Funcionários
 
