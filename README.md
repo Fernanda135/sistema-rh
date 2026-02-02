@@ -116,7 +116,6 @@ A aplicação web permite a interação completa com o sistema de RH, integrando
 
 ### Dashboard
 ![Dashboard do Sistema](./images/dashboard-1.png)
-![Dashboard do Sistema](./images/dashboard-2.png)
 
 ### Cadastro de Funcionários
 ![Cadastro de Funcionários](./images/add-func.png)
